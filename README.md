@@ -1,10 +1,9 @@
 # PicsEdit
-EN:
-This is a open-source, simple, free photo editor.
 
-This photo editor is open-source, so you can edit anything!
+This is a simple, free photo editor. It's a web app — open `index.html` in your browser to try it.
 
-RU:
-Это открытый, простой, бесплатный фоторедактор.
-
-Этот фоторедактор опенсорсный, поэтому вы можете изменять его как угодно!
+Notes:
+- This is a simple photo editor. More advanced features i will add soon
+How to run:
+1. Open `index.html` in a browser.
+2. Use (lol)

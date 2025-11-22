@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PicsEdit</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark lang-ru">
+
+  <div id="main-menu">
+    <canvas id="stars"></canvas>
+    <div id="menu-content">
+      <h1>PicsEdit</h1>
+        <p class="tagline" data-ru="Простой, бесплатный фоторедактор" data-en="Simple, free photo editor">Простой, бесплатный фоторедактор</p>
+      <div class="menu-buttons">
+          <button id="btn-new" data-ru="Новый проект" data-en="New Project">Новый проект</button>
+          <button id="btn-open" data-ru="Открыть проект" data-en="Open Project">Открыть проект</button>
+        <input id="main-open-file" type="file" accept=".json" style="display:none">
+        <button id="btn-settings">Настройки</button>
+        <button id="btn-support">Поддержать</button>
+        <button id="btn-github-main">GitHub</button>
+        </div>
+        <div class="menu-hint" data-ru="Сделано ChessVania, версия beta 1.0" data-en="Made by ChessVania, beta 1.0">Сделано ChessVania, версия beta 1.0</div>
+      <div class="menu-hint">Made by ChessVania, version beta 1.0</div>
+    </div>
+  </div>
+
+  <div id="workspace" class="hidden">
+    <header>
+      <div id="project-info">Project: <span id="proj-name"></span> — <span id="proj-res"></span></div>
+      <div class="workspace-actions">
+        <button id="btn-save">Сохранить как PNG</button>
+        <button id="btn-export-project">Сохранить как JSON</button>
+        <label class="import-label">Импорт<input id="import-project" type="file" accept=".json"></label>
+          <button id="btn-export-library" data-ru="Экспорт библиотеки" data-en="Export Library">Экспорт библиотеки</button>
+          <label class="import-label" data-ru="Импорт библиотеки" data-en="Import Library">Импорт библиотеки<input id="import-library" type="file" accept=".json"></label>
+         <button id="btn-add-to-library">Добавить в библиотеку</button>
+         <button id="btn-music" data-ru="Музыка ▶" data-en="Music ▶">Music ▶</button>
+         <label style="margin-left:8px">Громкость: <input id="music-volume" type="range" min="0" max="100" value="80" style="vertical-align:middle;width:120px"></label>
+         <button id="btn-hotkeys" data-ru="Горячие клавиши" data-en="Hotkeys">Горячие клавиши</button>
+         <button id="btn-github" data-ru="GitHub" data-en="GitHub">GitHub</button>
+         <button id="btn-back" data-ru="Главное меню" data-en="Main Menu">Главное меню</button>
+      </div>
+    </header>
+
+    <div id="editor-area">
+      <aside id="left-tools">
+        <label class="tool" data-ru="Добавить изображение" data-en="Add image">Add image
+          <input type="file" id="file-image" accept="image/*">
+        </label>
+        <div style="margin-top:8px">
+          <button id="btn-pipette" data-ru="Пипетка (выбрать цвет)" data-en="Pipette (pick color)">Pipette (pick color)</button>
+          <label style="margin-left:8px" data-ru="Цвет:" data-en="Color:">Color: <input type="color" id="remove-color" value="#00ff00"></label>
+          <label style="margin-left:8px" data-ru="Толерантность" data-en="Tolerance"><input type="number" id="remove-tolerance" value="30" min="0" max="200" style="width:80px"> Tolerance</label>
+            <div style="margin-top:6px"><button id="btn-remove-color" data-ru="Убрать выбранный цвет" data-en="Remove selected color">Remove selected color</button></div>
+        </div>
+        <button id="btn-add-text" data-ru="Добавить текст" data-en="Add text">Add text</button>
+        <div class="control">
+           <label data-ru="Шрифт" data-en="Font">Font
+            <select id="font-select">
+              <option>Arial</option>
+              <option>Times New Roman</option>
+              <option>Georgia</option>
+              <option>Courier New</option>
+              <option>Impact</option>
+            </select>
+          </label>
+        </div>
+        <div class="control">
+          <label data-ru="Стиль текста" data-en="Text style">Text style</label>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+            <label><input id="font-bold" type="checkbox" data-ru-label="Жирный" data-en-label="Bold"> Bold</label>
+            <label><input id="font-italic" type="checkbox" data-ru-label="Курсив" data-en-label="Italic"> Italic</label>
+          </div>
+          <div style="margin-top:8px">
+            <label data-ru="Обводка цвет" data-en="Stroke color">Stroke color <input id="font-stroke-color" type="color" value="#000000"></label>
+            <label style="margin-left:8px" data-ru="Толщина" data-en="Stroke width">Stroke width <input id="font-stroke-width" type="number" value="0" min="0" style="width:70px"></label>
+          </div>
+          <div style="margin-top:8px">
+            <label data-ru="Тень цвет" data-en="Shadow color">Shadow color <input id="font-shadow-color" type="color" value="#000000"></label>
+            <label style="margin-left:8px" data-ru="Смещение X" data-en="Offset X">Offset X <input id="font-shadow-x" type="number" value="0" style="width:60px"></label>
+            <label style="margin-left:8px" data-ru="Смещение Y" data-en="Offset Y">Offset Y <input id="font-shadow-y" type="number" value="0" style="width:60px"></label>
+            <label style="margin-left:8px" data-ru="Размытие" data-en="Blur">Blur <input id="font-shadow-blur" type="number" value="0" min="0" style="width:60px"></label>
+          </div>
+        </div>
+        <div class="control" style="display:flex;gap:8px;align-items:center;">
+          <label style="flex:1" data-ru="Шрифт" data-en="Font">Font
+            <select id="font-select">
+              <option>Arial</option>
+              <option>Times New Roman</option>
+              <option>Georgia</option>
+              <option>Courier New</option>
+              <option>Impact</option>
+            </select>
+          </label>
+          <label style="flex:1" data-ru="Другой шрифт" data-en="Custom font">Custom font
+            <input id="font-custom" placeholder="Enter font name (e.g. Montserrat)" data-ru-placeholder="Введите имя шрифта (например, Montserrat)" data-en-placeholder="Enter font name (e.g. Montserrat)">
+          </label>
+        </div>
+        <div class="control">
+          <label data-ru="Размер" data-en="Size">Size
+            <input id="font-size" type="number" value="32" min="8">
+          </label>
+        </div>
+        <div class="control">
+          <label data-ru="Цвет" data-en="Color">Цвет
+            <input id="font-color" type="color" value="#ffffff">
+          </label>
+        </div>
+        <div class="control">
+          <button id="btn-remove-green" data-ru="Убрать зелёный фон" data-en="Remove green background">Убрать зелёный фон</button>
+        </div>
+        <div class="control">
+          <label data-ru="Эффекты" data-en="Effects">Effects</label>
+          <select id="effects-select" multiple size="6">
+            <option value="none" data-ru="Нет" data-en="None">None</option>
+            <option value="blur" data-ru="Размытие" data-en="Blur">Blur</option>
+            <option value="grayscale" data-ru="Серый цвет" data-en="Grayscale">Grayscale</option>
+            <option value="invert" data-ru="Инверсия" data-en="Invert">Invert</option>
+            <option value="pixelate" data-ru="Пикселизация" data-en="Pixelate">Pixelate</option>
+            <option value="brightness" data-ru="Яркость" data-en="Brightness">Brightness</option>
+            <option value="fisheye" data-ru="Рыбий глаз" data-en="Fisheye">Fisheye</option>
+            <option value="swirl" data-ru="Завихрение" data-en="Swirl">Swirl</option>
+            <option value="selective-sat" data-ru="Выборочная насыщенность" data-en="Selective Saturation">Selective Saturation</option>
+            <option value="selective-remove" data-ru="Удалить выбранный цвет" data-en="Remove Selected Color">Remove Selected Color</option>
+          </select>
+          <div style="margin-top:8px">
+            <label data-ru="Сила эффекта" data-en="Effect strength">Effect strength
+              <input id="effect-strength" type="range" min="0" max="100" value="50">
+            </label>
+          </div>
+          <div style="margin-top:8px">
+            <label data-ru="Цвет для выборочной обработки:" data-en="Selective color:">Selective color: <input id="selective-color" type="color" value="#ff0000"></label>
+            <label style="margin-left:8px" data-ru="Толерантность" data-en="Tolerance">Tolerance <input id="selective-tolerance" type="number" value="30" min="0" max="255" style="width:70px"></label>
+          </div>
+        </div>
+      </aside>
+
+      <main id="scene-wrap">
+        <div id="scene" tabindex="0"></div>
+
+        <div id="scene-toolbar">
+          <button id="tb-zoom-in" title="Zoom in" data-ru-title="Увеличить" data-en-title="Zoom in">＋</button>
+          <button id="tb-zoom-out" title="Zoom out" data-ru-title="Уменьшить" data-en-title="Zoom out">−</button>
+          <button id="tb-zoom-reset" title="Reset zoom" data-ru-title="Сброс масштаба" data-en-title="Reset zoom">100%</button>
+          <button id="tb-add-image" title="Add image" data-ru-title="Добавить изображение" data-en-title="Add image">Добавить</button>
+          <button id="tb-export" title="Export (Ctrl+S)" data-ru-title="Экспорт (Ctrl+S)" data-en-title="Export (Ctrl+S)">Экспорт как png</button>
+          <button id="tb-delete" title="Delete (Del)" data-ru-title="Удалить (Del)" data-en-title="Delete (Del)">Удалить</button>
+          <button id="tb-duplicate" title="Duplicate" data-ru-title="Дублировать" data-en-title="Duplicate">Дублировать</button>
+          <button id="tb-rotate-left" title="Rotate left" data-ru-title="Повернуть влево" data-en-title="Rotate left">⟲</button>
+          <button id="tb-rotate-right" title="Rotate right" data-ru-title="Повернуть вправо" data-en-title="Rotate right">⟳</button>
+          <button id="tb-flip" title="Flip horizontally" data-ru-title="Отразить по горизонтали" data-en-title="Flip horizontally">Перевернуть</button>
+          <button id="tb-front" title="Bring forward" data-ru-title="Вперёд" data-en-title="Bring forward">Вперёд</button>
+          <button id="tb-back" title="Send backward" data-ru-title="Назад" data-en-title="Send backward">Назад</button>
+        </div>
+
+      </main>
+
+      <aside id="right-panel">
+        <h3 data-ru="Библиотека" data-en="Library">Библиотека</h3>
+        <div style="margin-bottom:8px"><input id="library-filter" placeholder="Фильтр..." data-ru-placeholder="Фильтр..." data-en-placeholder="Filter..." /></div>
+        <div id="library">
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
+
+  <div class="modal" id="modal-new">
+    <div class="modal-inner">
+      <h2>Новый проект</h2>
+      <label>Название
+        <input id="new-name" value="Без имени">
+      </label>
+      <label>Ширина
+        <input id="new-width" type="number" value="1024">
+      </label>
+      <label>Высота
+        <input id="new-height" type="number" value="768">
+      </label>
+      <div class="modal-actions">
+        <button id="create-project">Создать</button>
+        <button class="modal-close">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-settings">
+    <div class="modal-inner">
+      <h2>Настройки</h2>
+      <label>Тема
+        <select id="theme-select">
+          <option value="dark">Тёмная</option>
+          <option value="light">Светлая</option>
+        </select>
+      </label>
+      <label>Язык
+        <select id="lang-select">
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button id="save-settings">Сохранить</button>
+        <button class="modal-close">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-hotkeys">
+    <div class="modal-inner">
+      <h2>Горячие клавиши</h2>
+      <ul>
+        <li><b>Ctrl+O</b>: Открыть проект</li>
+        <li><b>Ctrl+S</b>: Сохранить (экспорт PNG)</li>
+        <li><b>Del</b>: Удалить выбранный объект</li>
+        <li><b>Ctrl+Z</b>: Отменить</li>
+      </ul>
+      <div class="modal-actions">
+        <button class="modal-close">Закрыть</button>
+      </div>
+    </div>
+
+      <div class="modal" id="modal-open">
+        <div class="modal-inner">
+          <h2>Открыть проект</h2>
+          <div id="open-list">
+          </div>
+          <div class="modal-actions">
+            <button id="clear-projects">Очистить все</button>
+            <button class="modal-close">Закрыть</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script id="i18n-data" type="application/json">
+  {
+    "#menu-content .tagline": {"ru":"Простой, бесплатный фоторедактор","en":"Simple, free photo editor"},
+    "#btn-new": {"ru":"Новый проект","en":"New Project"},
+    "#btn-open": {"ru":"Открыть проект","en":"Open Project"},
+    "#btn-settings": {"ru":"Настройки","en":"Settings"},
+    "#btn-support": {"ru":"Поддержать","en":"Support"},
+    "#btn-samples-main": {"ru":"Образцы","en":"Samples"},
+    "#btn-library-main": {"ru":"Библиотека","en":"Library"},
+    "#btn-tutorial": {"ru":"Как пользоваться","en":"Tutorial"},
+    "#btn-demos": {"ru":"Демо-проекты","en":"Demos"},
+    "label[for=menu-music-select]": {"ru":"Музыка:","en":"Music:"},
+    ".menu-hint": {"ru":"Сделано ChessVania, версия beta 1.0","en":"Made by ChessVania, beta 1.0"},
+    "#btn-save": {"ru":"Сохранить как PNG","en":"Save (PNG)"},
+    "#btn-export-project": {"ru":"Сохранить как JSON","en":"Export Project (JSON)"},
+    ".import-label[for=import-project], .import-label": {"ru":"Импорт","en":"Import"},
+    "#btn-export-library": {"ru":"Экспорт библиотеки","en":"Export Library"},
+    "#btn-add-to-library": {"ru":"Добавить в библиотеку","en":"Add to Library"},
+    "#btn-music": {"ru":"Музыка ▶","en":"Music ▶"},
+    "label[style*='margin-left']": {"ru":"Громкость:","en":"Volume:"},
+    "#btn-hotkeys": {"ru":"Горячие клавиши","en":"Hotkeys"},
+    "#btn-github": {"ru":"GitHub","en":"GitHub"},
+    "#btn-back": {"ru":"Главное меню","en":"Main Menu"},
+    "label.tool": {"ru":"Добавить изображение","en":"Add image"},
+    "#btn-pipette": {"ru":"Пипетка (выбрать цвет)","en":"Pipette (pick color)"},
+    "label[for=remove-color], label[style*='Цвет']": {"ru":"Цвет:","en":"Color:"},
+    "#remove-tolerance, label[style*='Толерантность']": {"ru":"Толерантность","en":"Tolerance"},
+    "#btn-remove-color": {"ru":"Убрать выбранный цвет","en":"Remove selected color"},
+    "#btn-add-text": {"ru":"Добавить текст","en":"Add text"},
+    "label[data-ru][data-en], label[data-ru]": {"ru":"Шрифт","en":"Font"},
+    "#font-custom": {"ru-placeholder":"Введите имя шрифта (например, Montserrat)","en-placeholder":"Enter font name (e.g. Montserrat)"},
+    "#font-size": {"ru":"Размер","en":"Size"},
+    "#font-color": {"ru":"Цвет","en":"Color"},
+    "#btn-remove-green": {"ru":"Убрать зелёный фон","en":"Remove green background"},
+    "#effects-select option[value=none]": {"ru":"Нет","en":"None"},
+    "#effects-select option[value=blur]": {"ru":"Размытие","en":"Blur"},
+    "#effects-select option[value=grayscale]": {"ru":"Серый цвет","en":"Grayscale"},
+    "#effects-select option[value=invert]": {"ru":"Инверсия","en":"Invert"},
+    "#effects-select option[value=pixelate]": {"ru":"Пикселизация","en":"Pixelate"},
+    "#effects-select option[value=brightness]": {"ru":"Яркость","en":"Brightness"},
+    "#effects-select option[value=fisheye]": {"ru":"Рыбий глаз","en":"Fisheye"},
+    "#effects-select option[value=swirl]": {"ru":"Завихрение","en":"Swirl"},
+    "#effects-select option[value=selective-sat]": {"ru":"Выборочная насыщенность","en":"Selective Saturation"},
+    "#effects-select option[value=selective-remove]": {"ru":"Удалить выбранный цвет","en":"Remove Selected Color"},
+    "#effect-strength": {"ru":"Сила эффекта","en":"Effect strength"},
+    "#selective-color": {"ru":"Цвет для выборочной обработки:","en":"Selective color:"},
+    "#selective-tolerance": {"ru":"Толерантность","en":"Tolerance"},
+    "#scene-toolbar button#tb-zoom-in": {"ru-title":"Увеличить","en-title":"Zoom in"},
+    "#scene-toolbar button#tb-zoom-out": {"ru-title":"Уменьшить","en-title":"Zoom out"},
+    "#scene-toolbar button#tb-zoom-reset": {"ru-title":"Сброс масштаба","en-title":"Reset zoom"},
+    "#scene-toolbar button#tb-add-image": {"ru":"Добавить","en":"Add"},
+    "#scene-toolbar button#tb-export": {"ru":"Экспорт как png","en":"Export as png"},
+    "#scene-toolbar button#tb-delete": {"ru":"Удалить","en":"Delete"},
+    "#right-panel h3": {"ru":"Библиотека","en":"Library"},
+    "#library-filter": {"ru-placeholder":"Фильтр...","en-placeholder":"Filter..."},
+    "#modal-new h2": {"ru":"Новый проект","en":"New Project"},
+    "#new-name": {"ru-value":"Без имени","en-value":"Untitled"},
+    "#create-project": {"ru":"Создать","en":"Create"},
+    "#modal-settings h2": {"ru":"Настройки","en":"Settings"},
+    "#theme-select option[value=dark]": {"ru":"Тёмная","en":"Dark"},
+    "#theme-select option[value=light]": {"ru":"Светлая","en":"Light"},
+    "#lang-select option[value=ru]": {"ru":"Русский","en":"Russian"},
+    "#lang-select option[value=en]": {"ru":"English","en":"English"},
+    "#save-settings": {"ru":"Сохранить","en":"Save"},
+    "#modal-hotkeys h2": {"ru":"Горячие клавиши","en":"Hotkeys"},
+    "#modal-hotkeys ul": {"ru":"<li><b>Ctrl+O</b>: Открыть проект</li><li><b>Ctrl+S</b>: Сохранить (экспорт PNG)</li><li><b>Del</b>: Удалить выбранный объект</li><li><b>Ctrl+Z</b>: Отменить</li>","en":"<li><b>Ctrl+O</b>: Open project</li><li><b>Ctrl+S</b>: Save (export PNG)</li><li><b>Del</b>: Delete selected object</li><li><b>Ctrl+Z</b>: Undo</li>"},
+    "#modal-tutorial h2": {"ru":"Как пользоваться","en":"Tutorial"},
+    "#modal-tutorial p": {"ru":"Добро пожаловать в PicsEdit — простой и бесплатный фоторедактор.","en":"Welcome to PicsEdit — a simple free photo editor"},
+    "#modal-open h2": {"ru":"Открыть проект","en":"Open Project"},
+    "#clear-projects": {"ru":"Очистить все","en":"Clear all"}
+  }
+  </script>
+</body>
+</html>
